@@ -43,7 +43,7 @@ void CD_Data::insert(ifstream &stream)
 
 
 
-// Insert method inserts a single record into the list (not currently used in this program)
+// Insert method inserts a single record into the list
 void CD_Data::insert(data data_entry)
 {
 	int null_index = SIZE + 1;
