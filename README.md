@@ -1,2 +1,1 @@
-# CSC-3380
-Object Oriented Design
+# LSU CSC 3380 - Object Oriented Design
