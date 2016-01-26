@@ -1,10 +1,10 @@
 
 /********************************************/
 /*    Groovy Music End-of-Year Inventory    */
-/*	          James Singleton               */
-/* 		    CSC 3380_97 Section 1           */
-/*                Assignment 1              */
-/* Instructor: Douglas  	        		*/
+/*	          James Singleton           */
+/* 	       CSC 3380_97 Section 1        */
+/*                 Assignment 1             */
+/* Instructor: Douglas  	            */
 /* Program due date:  February 2, 2016      */
 /********************************************/
 
