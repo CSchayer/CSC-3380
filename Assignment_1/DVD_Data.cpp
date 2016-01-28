@@ -1,11 +1,11 @@
-#include "CD_Data.h"
+#include "DVD_Data.h"
 #include <string>
 #include <iomanip>
 using namespace std;
 
 
-// Constructor
-CD_Data::CD_Data()
+// Constructor that initializes all values to null entries
+DVD_Data::DVD_Data()
 {
 	for (int i = 0; i < SIZE; i++)
 	{
@@ -23,7 +23,7 @@ CD_Data::CD_Data()
 
 
 // Insert method that fills the list from an input file
-void CD_Data::insert(ifstream &stream)
+void DVD_Data::insert(ifstream &stream)
 {
 	for (int i = 0; i < SIZE; i++)
 	{
@@ -32,6 +32,7 @@ void CD_Data::insert(ifstream &stream)
 		stream >> list[i].release_year;
 		stream >> list[i].selling_price;
 		stream >> list[i].inventory_count;
+		stream.ignore();
 		stream.ignore();
 		getline(stream, list[i].artist_name);
 		getline(stream, list[i].title);
@@ -44,7 +45,7 @@ void CD_Data::insert(ifstream &stream)
 
 
 // Insert method inserts a single record into the list
-void CD_Data::insert(data data_entry)
+void DVD_Data::insert(data data_entry)
 {
 	int null_index = SIZE + 1;
 		
@@ -79,12 +80,14 @@ void CD_Data::insert(data data_entry)
 
 
 // Scan method traverses the list and deletes items on or before the specified cut off date
-void CD_Data::scan_for_removal(ofstream &outFile, int cut_off_date)
+void DVD_Data::scan_for_removal(ofstream &outFile, int cut_off_date)
 {
-	outFile << "\n----------------------------------------------------------------------------------------------------------------------------";
+	// Heading
+	outFile << "\n---------------------------------------------------------------------------------------------------";
 	outFile << "\nITEMS TO BE REMOVED\n";
 	double inventory_value = 0;
 
+	// Scan the list and remove non-null items that have a release date equal to or below the cut off date
 	for (int i = 0; i < SIZE; i++)
 	{
 		if (list[i].release_year <= cut_off_date && list[i].ID != -1)
@@ -95,6 +98,7 @@ void CD_Data::scan_for_removal(ofstream &outFile, int cut_off_date)
 		}
 	}
 
+	// Display the value of the removed list items
 	outFile << "----------------------------------------\n";
 	outFile << "TOTAL VALUE OF REMOVED ITEMS: $" << fixed << setprecision(2) << inventory_value;
 	outFile << "\n----------------------------------------";
@@ -102,8 +106,8 @@ void CD_Data::scan_for_removal(ofstream &outFile, int cut_off_date)
 
 
 
-// Deletes a list item at a given index by resetting it to the default value
-void CD_Data::delete_item(int index)
+// Deletes a list item at a given index by setting it back to null value
+void DVD_Data::delete_item(int index)
 {
 	list[index].ID = -1;
 	list[index].category = -1;
@@ -118,7 +122,8 @@ void CD_Data::delete_item(int index)
 
 
 // Sorts list by ID in ascending order and places null entries at the bottom of the list
-void CD_Data::sort_by_ID()
+// NOTE: I had already created this method before we were told we did not need to sort the list. I figured I would just leave it in since it allows the program to work on non-sorted input as well.
+void DVD_Data::sort_by_ID()
 {
 	bool swap = true;
 	int i = 0;
@@ -226,33 +231,33 @@ void CD_Data::sort_by_ID()
 
 
 // Display all items in the list excluding the null values (ID = -1)
-void CD_Data::display(ofstream &outFile)
+void DVD_Data::display(ofstream &outFile)
 {
 	// Sort the list by ID in ascending order
 	sort_by_ID();
 
 	// Column headings
-	outFile << "\n----------------------------------------------------------------------------------------------------------------------------\n";
+	outFile << "\n---------------------------------------------------------------------------------------------------\n";
 	outFile << left << setw(5) << "ID";
 	outFile << setw(10) << "CATEGORY";
-	outFile << setw(6) << "RELEASE YEAR";
-	outFile << right << setw(10) << "PRICE\t";
-	outFile << setw(10) << "INVENTORY\t";
-	outFile << left << setw(26) << "ARTIST NAME";
-	outFile << setw(26) << "ALBUM TITLE";
+	outFile << setw(8) << "YEAR";
+	outFile << setw(10) << "PRICE";
+	outFile << setw(10) << "INVENTORY";
+	outFile << setw(18) << "ARTIST NAME";
+	outFile << setw(22) << "ALBUM TITLE";
 	outFile << "INVENTORY VALUE\n";
 	for (int i = 0; i < SIZE; i++)
 	{
 		// Display all non-null entries
 		if (list[i].ID != -1)
 		{
-			outFile << left << setw(7) << list[i].ID << " ";
-			outFile << setw(10) << list[i].category << " ";
-			outFile << setw(6) << list[i].release_year << " ";
-			outFile << right << fixed << showpoint << setprecision(2) << setw(10) << list[i].selling_price << " ";
-			outFile << setw(10) << list[i].inventory_count << "\t\t";
-			outFile << left << setw(25) << list[i].artist_name << " ";
-			outFile << setw(25) << list[i].title << " ";
+			outFile << left << setw(5) << list[i].ID;
+			outFile << setw(10) << list[i].category;
+			outFile << setw(8) << list[i].release_year;
+			outFile << fixed << showpoint << setprecision(2) << setw(10) << list[i].selling_price;
+			outFile << setw(10) << list[i].inventory_count;
+			outFile << setw(18) << list[i].artist_name;
+			outFile << setw(22) << list[i].title;
 			outFile << list[i].inventory_value << "\n";
 		}
 	}
@@ -260,29 +265,29 @@ void CD_Data::display(ofstream &outFile)
 
 
 // Overloaded display method that displays a single record when given a specific index location
-void CD_Data::display(ofstream &outFile, int index)
+void DVD_Data::display(ofstream &outFile, int index)
 {
-	outFile << left << setw(7) << list[index].ID << " ";
-	outFile << setw(10) << list[index].category << " ";
-	outFile << setw(6) << list[index].release_year << " ";
-	outFile << right << fixed << showpoint << setprecision(2) << setw(10) << list[index].selling_price << " ";
-	outFile << setw(10) << list[index].inventory_count << "\t\t";
-	outFile << left << setw(25) << list[index].artist_name << " ";
-	outFile << setw(25) << list[index].title << " ";
+	outFile << left << setw(5) << list[index].ID;
+	outFile << setw(10) << list[index].category;
+	outFile << setw(8) << list[index].release_year;
+	outFile << fixed << showpoint << setprecision(2) << setw(10) << list[index].selling_price;
+	outFile << setw(10) << list[index].inventory_count;
+	outFile << setw(18) << list[index].artist_name;
+	outFile << setw(22) << list[index].title;
 	outFile << list[index].inventory_value << "\n";
 }
 
 
 
 // Method to calculate inventory value of a single item in the list
-double CD_Data::get_inventory_value(int index)
+double DVD_Data::get_inventory_value(int index)
 {
 	return list[index].inventory_count * list[index].selling_price;
 }
 
 
 // Calculates total inventory value and prints to the outfile
-void CD_Data::get_total_inventory_value(ofstream &outFile)
+void DVD_Data::get_total_inventory_value(ofstream &outFile)
 {
 	double total_value = 0;
 	for (int i = 0; i < SIZE; i++)
@@ -300,7 +305,7 @@ void CD_Data::get_total_inventory_value(ofstream &outFile)
 
 
 // Requests a cut-off year from the user via command line
-int CD_Data::get_cut_off_date()
+int DVD_Data::get_cut_off_date()
 {
 	int cut_off_date;
 
