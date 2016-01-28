@@ -1,7 +1,7 @@
-// CD_Data.h
+// DVD_Data.h
 
-#ifndef CD_DATA_H
-#define CD_DATA_H
+#ifndef DVD_Data_H
+#define DVD_Data_H
 
 #include <iostream>
 #include <fstream>
@@ -22,9 +22,9 @@ struct data {
 };
 
 
-class CD_Data {
+class DVD_Data {
 public:
-	CD_Data();
+	DVD_Data();
 	void insert(ifstream &stream);
 	void insert(data data_entry);
 	void delete_item(int index);
