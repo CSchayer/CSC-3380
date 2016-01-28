@@ -122,8 +122,6 @@ void DVD_Data::delete_item(int index)
 
 
 // Sorts list by ID in ascending order and places null entries at the bottom of the list
-// NOTE: I had already created this method before we were told we did not need to sort the list. I figured I would just leave it in since it allows the program to work on non-sorted input as well.
-void DVD_Data::sort_by_ID()
 {
 	bool swap = true;
 	int i = 0;
@@ -182,7 +180,6 @@ void DVD_Data::sort_by_ID()
 
 	// After the bubble sort, all of the null entries (ID = -1) are at the top of the list.
 	// We need to move all non-null entries to the top of the list.
-
 	int count = 0;
 	// Count non-null entries
 	for (int i = 0; i < SIZE; i++)
