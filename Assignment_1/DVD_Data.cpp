@@ -122,6 +122,7 @@ void DVD_Data::delete_item(int index)
 
 
 // Sorts list by ID in ascending order and places null entries at the bottom of the list
+void DVD_Data::sort_by_ID();
 {
 	bool swap = true;
 	int i = 0;
